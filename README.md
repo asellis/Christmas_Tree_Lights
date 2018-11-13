@@ -30,7 +30,11 @@ The Python code to control the LEDs are plit into several files:
 - Controlling from Android
 
 # Images
-To be added
+![Glow](https://github.com/asellis/Christmas_Tree_Lights/blob/master/Images/Glow.gif)
+
+![Blue Single Moving](https://github.com/asellis/Christmas_Tree_Lights/blob/master/Images/Blue%20Single%20Moving.gif)
+
+![Red Grow Moving](https://github.com/asellis/Christmas_Tree_Lights/blob/master/Images/Red%20Grow%20Moving.gif)
 
 # Credits
 FastLED (https://github.com/FastLED/FastLED)
