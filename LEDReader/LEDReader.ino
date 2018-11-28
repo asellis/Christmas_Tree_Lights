@@ -8,7 +8,9 @@
 #define SERIAL_BUFFER_SIZE 256   // increases serial buffer to ensure all data comes in
 
 #define NUM_LEDS 300
-CRGB leds[NUM_LEDS];
+CRGB Strand1[100];
+CRGB Strand2[100];
+CRGB Strand3[100];
 
 const int numBytes = NUM_LEDS * 3;    // The number of bytes needed for all the leds, 3 per led (R/G/B)
 char receivedBytes[numBytes];    // a buffer to store all the led lights, will convert later to an int
@@ -19,9 +21,9 @@ void setup() {
   Serial.begin(500000);   // Starts serial to allow transfer of data
 
   // Setup LEDs, subject to change with added stands
-  FastLED.addLeds<WS2811, 13, RGB>(leds, 100);
-  FastLED.addLeds<WS2811, 12, RGB>(leds, 100);
-  FastLED.addLeds<WS2811, 11, RGB>(leds, 100);
+  FastLED.addLeds<WS2811, 13, RGB>(Strand1, 100);
+  FastLED.addLeds<WS2811, 12, RGB>(Strand2, 100);
+  FastLED.addLeds<WS2811, 11, RGB>(Strand3, 100);
   //Serial.println("Start");
 
 }
@@ -91,7 +93,7 @@ void readCommand(char serialCommand)
 }
 
 void setLED()
-{
+{  
   int ledNum, r, g, b;
   for(int i=0; i<numBytes; i+=3)
   {
@@ -102,10 +104,28 @@ void setLED()
     b = (uint8_t)receivedBytes[i+2];
 
     // Set each LED
-    ledNum = i/3;
-    leds[ledNum].r = (int)r;
-    leds[ledNum].g = (int)g;
-    leds[ledNum].b = (int)b;
+    // if statement to spread amongst led strands
+    if(i<(100*3))
+    {
+      ledNum = i/3;
+      Strand1[ledNum].r = (int)r;
+      Strand1[ledNum].g = (int)g;
+      Strand1[ledNum].b = (int)b;
+    }
+    else if(i>=(100*3) && i<(200*3))
+    {
+      ledNum = (i-(100*3))/3;
+      Strand2[ledNum].r = (int)r;
+      Strand2[ledNum].g = (int)g;
+      Strand2[ledNum].b = (int)b;
+    }
+    else if(i>=(200*3))
+    {
+      ledNum = (i-(200*3))/3;
+      Strand3[ledNum].r = (int)r;
+      Strand3[ledNum].g = (int)g;
+      Strand3[ledNum].b = (int)b;
+    }
   }
 }
 

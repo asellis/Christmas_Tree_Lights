@@ -11,13 +11,21 @@ class xLEDController:
         self.leds = [LED() for i in range(ledCount)]
         self.stopLED = False
 
-        self.layers = [(0,ledCount)]    # Specifies the start led of each layer
-                            # of the tree
+        self.layers = dict()   # Each entry will be a layer that contains the
+                                # The LED number to light up
+        self.layers['all'] = [i for i in range(ledCount)]
 
-    def setLayers(self, layers):
-        for i in range(len(layers)-1):
-            self.layers.insert(len(self.layers)-1,(layers[i], layers[i+1]))
-        self.layers.insert(len(self.layers)-1,(layers[len(layers)-1], len(self.leds)))
+    def setLayers(self, layerStarts):
+        for i in range(len(layerStarts)-1):
+            self.layers[i] = [j for j in range(layerStarts[i], layerStarts[i+1])]
+        self.layers[len(layerStarts)-1] = [j for j in range(layerStarts[-1], len(self.leds))]
+
+    def getLayer(self, layer):
+        # Returns the LED indecies of the specified layer
+        return self.layers[layer]
+
+    def ledValues(self, led):
+        return self.leds[led].values()
 
     def update(self):
         # Sends data to the arduino to update all LEDs
@@ -36,16 +44,17 @@ class xLEDController:
         if self.ser.cleanLine(rec) == 'Done':
             return
         
-    def set(self, ledNum, red, green, blue):
-        self.leds[ledNum].set(red, green, blue)
+    def set(self, red, green, blue, leds):
+        for led in leds:
+            self.leds[led].set(red, green, blue)
 
-    def setAll(self, red, green, blue, layer = -1):
-        for i in range(self.layers[layer][0],self.layers[layer][1]):
+    def setAll(self, red, green, blue, leds):
+        for i in leds:
             self.leds[i].set(red, green, blue)
 
-    def setPattern(self, leds, layer=-1):
-        for i in range(len(self.leds)):
-            color = leds[i%len(leds)].values()
+    def setPattern(self, pattern, leds):
+        for i in leds:
+            color = pattern[i%len(pattern)].values()
             self.leds[i].set(color[0], color[1], color[2])
 
     def glow(self, count=5, minIntensity=0, maxIntensity=255):
@@ -78,10 +87,10 @@ class xLEDController:
 if __name__ == '__main__':
     ctrl = xLEDController()
     ctrl.update()
-    ctrl.setPattern([LED(255,0,0),LED(0,255,0)])
+    #ctrl.setPattern([LED(255,0,0),LED(0,255,0)], ctrl.getLayer('all'))
     ctrl.update()
     ctrl.setLayers([0,100, 200])
-    ctrl.setAll(255,0,0, layer=0)
-    ctrl.setAll(0,255,0, layer=1)
-    ctrl.setAll(0,0,255, layer=2)
+    ctrl.setAll(255,0,0, ctrl.getLayer(0))
+    ctrl.setAll(0,255,255, ctrl.getLayer(1))
+    ctrl.setAll(0,255, 0, ctrl.getLayer(2))
     ctrl.update()

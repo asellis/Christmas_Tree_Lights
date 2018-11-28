@@ -12,22 +12,26 @@ The Python code to control the LEDs are plit into several files:
 - SerialCom.py handles all serial communications between the Python code and the Arduino
 - xLEDController.py is a class made for updating the LEDs in various ways
 - xLEDInterface.py is still a work in process, but its purpose is to issue commands of what LEDs or effect you want to apply
+- xLEDPlayer.py contains the means of playing events and setting patterns (still under development)
 - LEDReader is the Arduino application for controlling LEDs and receiving serial commands
 
 # Current Features
 - Update individual LEDs
 - Update all LEDs at once
 - Apply a pattern
+- Glow
+- Spiral
+- Fade
 
 # Features Currently working on
 - Layers, select a portion of the strand to update a certain way
-- Glow and while loops (multi-threading)
-- Interface (will probably stay as a text based interface and commands will be less for testing)
+- Interface
+- Events and reading events from file
+- Twinkle pattern
 
 # Other Features to look into
-- Reading commands from a file (will be after figuring out layers and commands in a while loop)
 - Pairing with music
-- Controlling from Android
+- Controlling from Android or web browser
 
 # Images
 ![Glow](https://github.com/asellis/Christmas_Tree_Lights/blob/master/Images/Glow.gif)

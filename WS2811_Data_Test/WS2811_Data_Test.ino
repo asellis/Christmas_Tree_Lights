@@ -3,17 +3,22 @@
 
 
 int wait = 1000;
-int ledCount = 50;
+int ledCount = 100;
 
 void setup() {
   ledsetup();  
+  for(int i=0; i<100; ++i)
+  {
+    sendPixel(255,255,255);
+  }
+  show();
 }
 
 void loop() {
   
   // Reset all pixels
   //setColor(200, 100, 50);
-  
+  /*
   resetLeds();
   show();
   
@@ -32,7 +37,7 @@ void loop() {
   sendPixel(0,0,100);
   show();
   delay(wait);
-  
+  */
 }
 
 void resetLeds()

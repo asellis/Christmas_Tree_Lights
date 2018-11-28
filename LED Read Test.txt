@@ -1,0 +1,19 @@
+# Still figuring out best layout
+Time	Command		Parameters	LEDs
+
+
+Notes:
+Comma or tab seperated
+LEDs can be a layer
+
+Time:
+	Time in ms
+	Start of the song will be 0 and will add on time from getting computer time
+		of when to execute each command
+	Put queued commands into a list, first one will come next in time
+	Add commands to list of commands and parameters
+	Possibly have a thread dealing with the adding of commands
+		pause play as needed to safely add/delete commands
+		Have a confirmed paused variable
+	How to delete from list playing?
+		Have an end time?

@@ -15,7 +15,7 @@
 #define T0L 800
 
 // Time for bit latch
-#define RES 300000
+#define RES 50000
 
 #define NS_PER_SEC (1000000000L)
 #define CYCLES_PER_SEC (F_CPU)
