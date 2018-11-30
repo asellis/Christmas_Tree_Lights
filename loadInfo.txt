@@ -1,0 +1,5 @@
+layers		0,50,102,143,186,227,255,273,288
+port		' '
+play		Wish		We_Wish_You_A_Merry_Xmas.txt
+demo		RGB_Spiral	RGB_Spiral.txt
+demo		RG_Glow		RG_Glow.txt

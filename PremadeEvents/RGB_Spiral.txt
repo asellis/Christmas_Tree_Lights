@@ -1,0 +1,2 @@
+Time	Command		LEDs		Parameters
+0	spiral		all		duration=10 pattern=[(100,0,0),(0,100,0),(0,0,100)]

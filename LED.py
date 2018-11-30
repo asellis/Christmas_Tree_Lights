@@ -16,3 +16,13 @@ class LED:
 
     def __str__(self):
         return "LED red={} green={} blue={}".format(self.r, self.g, self.b)
+
+    def __getitem__(self,key):
+        if key==0:
+            return self.r
+        elif key==1:
+            return self.g
+        elif key==2:
+            return self.b
+        else:
+            return

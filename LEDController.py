@@ -1,8 +1,8 @@
 # Controls the lights for a christmas tree
-from SerialCom import SerialCom  # Serial Communication to the arduino
-from LED import LED              # Class to help store LED values
+from SerialCom import SerialCom     # Serial Communication to the arduino
+from LED import LED                 # Class to help store LED values
 
-class xLEDController:
+class LEDController:
     def __init__(self, port='', baudRate = 500000, ledCount = 300):
         self.ser = SerialCom(port, baudRate)
         self.ser.readAll()  # Initiallizing the serial sends some data
@@ -17,8 +17,30 @@ class xLEDController:
 
     def setLayers(self, layerStarts):
         for i in range(len(layerStarts)-1):
-            self.layers[i] = [j for j in range(layerStarts[i], layerStarts[i+1])]
-        self.layers[len(layerStarts)-1] = [j for j in range(layerStarts[-1], len(self.leds))]
+            self.layers[str(i)] = [j for j in range(layerStarts[i], layerStarts[i+1])]
+        self.layers[str(len(layerStarts)-1)] = [j for j in range(layerStarts[-1], len(self.leds))]
+
+        # Split into quarters
+        q1=[]
+        q2=[]
+        q3=[]
+        q4=[]
+        for layer in self.layers:
+            if layer!='all':
+                length = len(self.layers[layer])
+                for led in range(len(self.layers[layer])):
+                    if led/length <= 1/4:
+                        q1.append(self.layers[layer][led])
+                    elif led/length > 1/4 and led/length <= 1/2:
+                        q2.append(self.layers[layer][led])
+                    elif led/length > 1/2 and led/length <=3/4:
+                        q3.append(self.layers[layer][led])
+                    elif led/length > 3/4 and led/length <=1:
+                        q4.append(self.layers[layer][led])
+        self.layers['q1'] = q1
+        self.layers['q2'] = q2
+        self.layers['q3'] = q3
+        self.layers['q4'] = q4
 
     def getLayer(self, layer):
         # Returns the LED indecies of the specified layer
@@ -89,8 +111,8 @@ if __name__ == '__main__':
     ctrl.update()
     #ctrl.setPattern([LED(255,0,0),LED(0,255,0)], ctrl.getLayer('all'))
     ctrl.update()
-    ctrl.setLayers([0,100, 200])
-    ctrl.setAll(255,0,0, ctrl.getLayer(0))
-    ctrl.setAll(0,255,255, ctrl.getLayer(1))
-    ctrl.setAll(0,255, 0, ctrl.getLayer(2))
+    ctrl.setLayers([0,50,102,143,186,227,255,273,288,299])
+    ctrl.setAll(255,0,0, ctrl.getLayer('q1'))
+    ctrl.setAll(0,255,0, ctrl.getLayer('q2'))
+    ctrl.setAll(0,0,255, ctrl.getLayer('q3'))
     ctrl.update()

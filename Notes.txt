@@ -1,0 +1,5 @@
+Python libraries used:
+	pyserial
+	python-vlc
+
+Can be installed through pip

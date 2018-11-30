@@ -35,6 +35,7 @@ class SerialCom:
                 if self.debug:
                     print('Trying to connect to common ports')
                 self.connectCommonPorts()
+                self.portFound=True
             except:
                 # Failed to connect
                 if debug:

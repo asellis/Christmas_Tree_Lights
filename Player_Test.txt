@@ -1,3 +1,21 @@
-Time	Command		Parameters		LEDs
-0	setPattern	(100,0,0),(0,100,0)	all
-10	setPattern	(100,0,0),(0,100,0),(0,0,100)	all
+song	We_Wish_You_A_Merry_Xmas.mp3
+Time	Command		LEDs		Parameters
+0	setPattern	all		(100,0,0) (0,100,0)
+3	twinkle		all		color=(50,50,50) number=20 twinkleDuration=.5
+5	setPattern	0+1+2		(0,0,0)
+8	clear
+8	twinkle		all		color=(50,50,50) number=50 twinkleDuration=.5
+10	clear
+11	setPattern	q1		(100,0,0)
+11	setPattern	q2		(0,100,0)
+11	setPattern	q3		(0,0,100)
+15	clear
+15	setPattern	0		(50,50,50)
+16	setPattern	1		(50,50,50)
+17	setPattern	2		(50,50,50)
+18	setPattern	3		(50,50,50)
+19	setPattern	4		(50,50,50)
+20	setPattern	5		(50,50,50)
+21	setPattern	6		(50,50,50)
+22	setPattern	7		(50,50,50)
+23	setPattern	8		(50,50,50)

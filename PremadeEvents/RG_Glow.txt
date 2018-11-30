@@ -1,0 +1,3 @@
+Time	Command		LEDs		Parameters
+0	setPattern	all		(100,0,0) (0,100,0)
+0	glow		all		minValue=20 maxValue=120 valueStart=0 cycleDuration=5

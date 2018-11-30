@@ -12,7 +12,7 @@ class ledEvent:
         self.time = time
         self.leds = []
         self.layer = layer
-        self.command = ''
+        self.command = command
         self.parameters = parameters
         self.end = False
         
@@ -41,24 +41,58 @@ class ledEvent:
         return [self.time, self.command, self.parameters, self.layer]
 
     def getTime(self):
-        return self.time()
+        return self.time
 
     def __str__(self):
-        return 'ledEvent: time={} command={} parameters={} layer={}'.format(\
+        return 'ledEvent: time={} command={} parameters:{} layer={}'.format(\
             self.time, self.command, self.parameters, self.layer)
 
 
 class ledEvents:
     def __init__(self, file = ''):
         self.events = []
+        self.songFile=''
         if file!='':
             self.openEvents(file)
 
     def openEvents(self, file):
         contents = open(file, "r").readlines()
-        for line in contents[1:]:
+        startLine=1
+        
+        if contents[0].strip().split('\t')[0]=='song':
+            self.songFile=contents[0].strip().split('\t')[1]
+            startLine+=1
+            
+        for line in contents[startLine:]:
             items = line.strip().split('\t')
-            self.events.append(ledEvent(int(items[0]),items[1],items[2],items[3]))
+            if len(items)<=1:
+                continue
+            items = [item for item in items if item!='']
+
+            time = items[0]
+            command = items[1]
+            parameters = []
+            leds = []
+            # Setting layer(s)
+            if len(items)>=3:
+                if '+' in items[2]:
+                    leds=items[2].split('+')
+                    for led in leds:
+                        led.strip()
+                else:
+                    leds = items[2]
+                    leds.strip()
+                    leds=[leds]
+
+            # Setting parameters
+            if len(items)>=4:
+                parameters = items[3].split(' ')
+                for i,item in enumerate(parameters):
+                    if '=' in item:
+                        p=item.split('=')
+                        parameters[i]=(p[0],p[1])
+                
+            self.events.append(ledEvent(time=float(time),command=command,parameters=parameters,layer=leds))
 
     def time(self):
         # Returns the time of the next event
@@ -68,9 +102,17 @@ class ledEvents:
         # Returns the first event and removes it from the list of events
         return self.events.pop(0)
 
-    def printEvents(self):
+    def song(self):
+        return self.songFile
+
+    def print(self):
         for event in self.events:
             print(event)
 
+    def __len__(self):
+        return len(self.events)
+
 if __name__ == '__main__':
-    ledEvents('Player_Test.txt')
+    events = ledEvents('Player_Test.txt')
+    events.print()
+    print(events.song())

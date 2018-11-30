@@ -10,28 +10,29 @@ On the software side of things, the FastLED library is used to store all the LED
 
 The Python code to control the LEDs are plit into several files:
 - SerialCom.py handles all serial communications between the Python code and the Arduino
-- xLEDController.py is a class made for updating the LEDs in various ways
-- xLEDInterface.py is still a work in process, but its purpose is to issue commands of what LEDs or effect you want to apply
-- xLEDPlayer.py contains the means of playing events and setting patterns (still under development)
+- LEDController.py is a class made for updating the LEDs in various ways
+- LEDInterface.py is still a work in process, but its purpose is to issue commands of what LEDs or effect you want to apply
+- LEDPlayer.py contains the means of playing events and setting patterns
+- LEDInterface.py is an interface for controlling and playing events
 - LEDReader is the Arduino application for controlling LEDs and receiving serial commands
 
 # Current Features
 - Update individual LEDs
 - Update all LEDs at once
 - Apply a pattern
+- Layer the tree
 - Glow
 - Spiral
 - Fade
+- Twinkle
+- Play a set of events
+- Play events paired with a song
 
-# Features Currently working on
-- Layers, select a portion of the strand to update a certain way
+# Currently working on
 - Interface
-- Events and reading events from file
-- Twinkle pattern
+- Documentation
+- Wiki with instructions for use
 
-# Other Features to look into
-- Pairing with music
-- Controlling from Android or web browser
 
 # Images
 ![Glow](https://github.com/asellis/Christmas_Tree_Lights/blob/master/Images/Glow.gif)
@@ -40,5 +41,11 @@ The Python code to control the LEDs are plit into several files:
 
 ![Red Grow Moving](https://github.com/asellis/Christmas_Tree_Lights/blob/master/Images/Red%20Grow%20Moving.gif)
 
-# Credits
+# Credits/Libraries Used
 FastLED (https://github.com/FastLED/FastLED)
+pyserial
+vlc (python-vlc)
+
+Audionautix for song (free to use music on YouTube)
+We Wish You A Merry Xmas by Audionautix is licensed under a Creative Commons Attribution license (https://creativecommons.org/licenses/by/4.0/)
+Artist: http://audionautix.com/ 

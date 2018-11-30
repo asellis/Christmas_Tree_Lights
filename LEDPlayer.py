@@ -10,7 +10,7 @@ import _thread
 import random
 import vlc
 
-class xLEDPlayer:
+class LEDPlayer:
     def __init__(self, port='', baudRate = 500000, ledCount = 300):
         self.ctrl = LEDController(port, baudRate, ledCount)
         self.leds = dict()  # Stores information about each LED
@@ -20,11 +20,12 @@ class xLEDPlayer:
         self.parameters = []
         self.events = ledEvents()
         self.pauseLoop = False
-        self.stopLoop = False
+        self.stopLoop = True
         self.paused = False
         self.startTime = 0
-
+        self.media = vlc.MediaPlayer()
         self.setupLED()
+        self.pauseTime = 0
 
     def setupLED(self):
         # Adds dictionary values for all possible commands
@@ -163,10 +164,10 @@ class xLEDPlayer:
 
     def play(self):
         if self.events.song()!='':
-            p = vlc.MediaPlayer(self.events.song())
-            p.play()
+            self.media = vlc.MediaPlayer(self.events.song())
+            self.media.play()
             waitTime=time()
-            while p.get_time()<=0 and (time()-waitTime)<1:
+            while self.media.get_time()<=0 and (time()-waitTime)<1:
                 # Wait until song starts
                 pass
         self.startTime = time()
@@ -180,7 +181,7 @@ class xLEDPlayer:
             #for i in range(len(self.commands)):
             #    self.plugParameters(self.commands[i], self.parameters[i])
             self.update()
-        p.stop()
+        self.media.stop()
 
 
     def reset(self):
@@ -231,7 +232,7 @@ class xLEDPlayer:
     
     def setGlow(self, led, amount=-1, minValue=0, maxValue=255, stopAt=-1, duration=-1, cycleDuration=-1, valueStart=-1):
         # Sets the LED to glow
-
+        
         # Update dictionary
         self.leds[led]['command']='glow'
         self.leds[led]['glow']['amount']=amount                     # The max value change in the glow
@@ -542,7 +543,7 @@ class xLEDPlayer:
 
     
 if __name__ == "__main__":
-    player = xLEDPlayer()
+    player = LEDPlayer()
     player.reset()
     #sleep(7)
     player.setLayers([0,50,102,143,186,227,255,273,288])
