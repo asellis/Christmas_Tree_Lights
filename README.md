@@ -2,6 +2,7 @@
 This project is to control WS2811 LED lights on a Christmas Tree.
 
 This is a work in progress, but is in a state where tree events can be paired up with music.
+
 [![Video](https://i.ytimg.com/vi/DiNhDXpTWDw/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDUJtWhysvL5qJiwSRvviOEOSzPIQ)](https://www.youtube.com/watch?v=DiNhDXpTWDw)
 
 Please visit the [Christmas Tree Lights Wiki](https://github.com/asellis/Christmas_Tree_Lights/wiki) for more details on the setup.
