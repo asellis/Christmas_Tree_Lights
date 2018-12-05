@@ -1,11 +1,11 @@
 # Christmas_Tree_Lights
-This project is to control WS2811 LED lights on a Christmas Tree.
-
-This is a work in progress, but is in a state where tree events can be paired up with music.
-
-[![Video](https://i.ytimg.com/vi/DiNhDXpTWDw/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDUJtWhysvL5qJiwSRvviOEOSzPIQ)](https://www.youtube.com/watch?v=DiNhDXpTWDw)
+This project is to control WS2811 LED lights on a Christmas Tree.  This is a work in progress, but is in a state where tree events can be paired up with music.
 
 Please visit the [Christmas Tree Lights Wiki](https://github.com/asellis/Christmas_Tree_Lights/wiki) for more details on the setup.
+
+# Video
+
+[![Video](https://i.ytimg.com/vi/DiNhDXpTWDw/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDUJtWhysvL5qJiwSRvviOEOSzPIQ)](https://www.youtube.com/watch?v=DiNhDXpTWDw)
 
 # Setup
 There are 3 strands of WS2811 lights, each with 100 lights (2 strands of 50 are connected together to make one long strand), which are connected to an Arduino (Mega 2560) off of 3 seperate PWM pins.  A 5V 30A power supply is being used to power the LEDs.  Eventually, a Rasperry Pi will be used to send serial commands to the Arduino as to which lights to update.  Right now a computer is being used to send serial commands while developing the code.  The lights are able to update at around 20-25 fps.
