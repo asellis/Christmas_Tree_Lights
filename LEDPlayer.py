@@ -12,12 +12,12 @@ import vlc
 
 class LEDPlayer:
     def __init__(self, port='', baudRate = 500000, ledCount = 300):
+        # Starts connection to serial and sets up LEDs
         self.ctrl = LEDController(port, baudRate, ledCount)
         self.leds = dict()  # Stores information about each LED
         for i in range(ledCount):
             self.leds[i] = dict()
-        self.commands = []
-        self.parameters = []
+
         self.events = ledEvents()
         self.pauseLoop = False
         self.stopLoop = True
@@ -54,6 +54,7 @@ class LEDPlayer:
         self.twinkleInfo['on']=False
 
     def loadEvents(self, file=''):
+        # Loads an events file
         self.events = ledEvents(file)
 
     def checkCommands(self):
@@ -126,21 +127,16 @@ class LEDPlayer:
             self.stop()
 
     def getParameters(self, event):
+        # Gets the command parameters from an event
         parameters = ''
         for param in event.parameters:
             parameters+=param[0]+'='+param[1]+','
         parameters=parameters.strip(',')
         return parameters
 
-    def addCommand(self, command, parameters):
-        self.commands.append(command)
-        self.parameters.append(parameters)
-
-    def clearCommands(self):
-        self.commands=[]
-        self.parameters=[]
-
     def update(self):
+        # Updates the LEDs to the given colors
+        # Must be called in order to produce a change
         self.ctrl.update()
 
     def plugParameters(self, command, args):
@@ -148,21 +144,27 @@ class LEDPlayer:
         command(*args)
 
     def setLayers(self, layerStarts):
+        # Sets layers in the tree
+        # Input is the beginning of every horizonatal layer
         self.ctrl.setLayers(layerStarts)
 
     def getLayer(self, layer):
+        # Returns the LEDs of the given layer name
         return self.ctrl.getLayer(layer)
 
     def pause(self):
+        # Pauses playing events
         if self.pauseLoop:
             self.pauseLoop = False
         else:
             self.pauseLoop = True
 
     def stop(self):
+        # Stops playing events
         self.stopLoop = True
 
     def play(self):
+        # Plays stored events
         if self.events.song()!='':
             self.media = vlc.MediaPlayer(self.events.song())
             self.media.play()
@@ -204,7 +206,6 @@ class LEDPlayer:
             self.leds[i]['twinkle']['on']=False
             self.ctrl.set(0,0,0,[i])
         self.twinkleInfo['on']=False
-        #self.pauseLoop=False
 
 
     """
@@ -539,30 +540,3 @@ class LEDPlayer:
                 self.leds[led]['twinkle']['on']=True
 
             self.twinkleInfo['count']+=1
-
-
-    
-if __name__ == "__main__":
-    player = LEDPlayer()
-    player.reset()
-    #sleep(7)
-    player.setLayers([0,50,102,143,186,227,255,273,288])
-    # Testing
-    #player.setPattern([LED(100,0,0),LED(0,100,0)], player.getLayer('all'))
-    #for i in range(len(player.leds)):
-        #player.setFade(i,5)
-        #player.setGlow(i, minValue = 20, maxValue = 125, amount = -1, cycleDuration = 5, valueStart='min')
-        #player.setGlow(i, minValue = 20, maxValue = 125, amount = -1, )
-    #player.setSpiral(0,299,duration=12, pattern=[[100,0,0],[0,100,0],[0,0,100]], fill=True, stopAt=9)
-    #player.play()
-    #'''
-    #player.setPattern([LED(100,45,0)], player.getLayer('all'))
-    #player.setTwinkle(player.getLayer('all'),color=[100,100,100],number=50, twinkleDuration=.5)
-    #_thread.start_new_thread(player.play,())
-    #sleep(.0001)
-    #player.stop()
-    #player.reset()
-
-    # Loading events
-    player.loadEvents(r'C:\Users\Aaron\Desktop\Christmas_Tree_Lights/We_Wish_You_A_Merry_Xmas.txt')
-    _thread.start_new_thread(player.play,())

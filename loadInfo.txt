@@ -3,3 +3,5 @@ port		' '
 play		Wish		We_Wish_You_A_Merry_Xmas.txt
 demo		RGB_Spiral	RGB_Spiral.txt
 demo		RG_Glow		RG_Glow.txt
+demo		1hr_demo	1hr_demo.txt
+demo		2hr_demo	2hr_demo.txt

@@ -34,10 +34,11 @@ class ledEvent:
     def setEnd(self, bool = True):
         self.end = True
 
-    def end(self):
+    def getEnd(self):
         return self.end
 
     def content(self):
+        # Returns the information stored in the event
         return [self.time, self.command, self.parameters, self.layer]
 
     def getTime(self):
@@ -56,6 +57,7 @@ class ledEvents:
             self.openEvents(file)
 
     def openEvents(self, file):
+        # Opens events from file
         contents = open(file, "r").readlines()
         startLine=1
         
@@ -103,6 +105,7 @@ class ledEvents:
         return self.events.pop(0)
 
     def song(self):
+        # Returns the song associated with the events, if specified
         return self.songFile
 
     def print(self):
@@ -111,8 +114,3 @@ class ledEvents:
 
     def __len__(self):
         return len(self.events)
-
-if __name__ == '__main__':
-    events = ledEvents('Player_Test.txt')
-    events.print()
-    print(events.song())

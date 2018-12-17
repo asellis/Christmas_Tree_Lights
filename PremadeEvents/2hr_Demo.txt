@@ -1,0 +1,23 @@
+Time	Command		LEDs		Parameters
+0	setPattern	all		(50,0,0) (0,50,0)
+0	glow		all		minValue=35 maxValue=80 valueStart=0 cycleDuration=3
+900	clear
+900	setPattern	all		(30,30,30)
+900	twinkle		all		number=60 color=(0,25,50) twinkleDuration=.8
+1800	clear
+1800	spiral		all		duration=10 pattern=[(80,0,0),(0,80,0),(0,0,80)]
+2700	clear
+2700	setPattern	all		(50,0,0) (0,50,0)
+2700	twinkle		all		amount=4 number=80 twinkleDuration=0.5
+3600	clear
+3600	setPattern	all		(50,0,0) (0,50,0)
+3600	glow		all		minValue=35 maxValue=80 valueStart=0 cycleDuration=3
+4500	clear
+4500	setPattern	all		(30,30,30)
+4500	twinkle		all		number=60 color=(0,25,50) twinkleDuration=.8
+5400	clear
+5400	spiral		all		duration=10 pattern=[(80,0,0),(0,80,0),(0,0,80)]
+6300	clear
+6300	setPattern	all		(50,0,0) (0,50,0)
+6300	twinkle		all		amount=4 number=80 twinkleDuration=0.5
+7200	reset

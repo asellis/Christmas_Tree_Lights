@@ -16,6 +16,7 @@ class LEDController:
         self.layers['all'] = [i for i in range(ledCount)]
 
     def setLayers(self, layerStarts):
+        # Splits the tree into horizontal layers
         for i in range(len(layerStarts)-1):
             self.layers[str(i)] = [j for j in range(layerStarts[i], layerStarts[i+1])]
         self.layers[str(len(layerStarts)-1)] = [j for j in range(layerStarts[-1], len(self.leds))]
@@ -67,19 +68,23 @@ class LEDController:
             return
         
     def set(self, red, green, blue, leds):
+        # Sets the given LEDs a specified color
         for led in leds:
             self.leds[led].set(red, green, blue)
 
     def setAll(self, red, green, blue, leds):
+        # Same as set
         for i in leds:
             self.leds[i].set(red, green, blue)
 
     def setPattern(self, pattern, leds):
+        # Sets the LEDs a specified pattern, i.e. Red, Green, Red, Green...
         for i in leds:
             color = pattern[i%len(pattern)].values()
             self.leds[i].set(color[0], color[1], color[2])
 
     def glow(self, count=5, minIntensity=0, maxIntensity=255):
+        # Maxes the LEDs glow, best to use in LED player
         nums = []
         level = maxIntensity
         while not self.stopLED:
@@ -101,18 +106,9 @@ class LEDController:
             
         
     def stop(self):
+        # Stops glowing
         self.stopLED = True
 
     def start(self):
+        # Continues glowing
         self.stopLED = False
-
-if __name__ == '__main__':
-    ctrl = xLEDController()
-    ctrl.update()
-    #ctrl.setPattern([LED(255,0,0),LED(0,255,0)], ctrl.getLayer('all'))
-    ctrl.update()
-    ctrl.setLayers([0,50,102,143,186,227,255,273,288,299])
-    ctrl.setAll(255,0,0, ctrl.getLayer('q1'))
-    ctrl.setAll(0,255,0, ctrl.getLayer('q2'))
-    ctrl.setAll(0,0,255, ctrl.getLayer('q3'))
-    ctrl.update()

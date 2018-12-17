@@ -63,6 +63,7 @@ class SerialCom:
             print("Unable to connect to port")
 
     def write(self, item):
+        # Writes item to serial
         if type(item) == str or type(item) == chr:
             #self.ser.write(bytes(item, 'utf-8'))
             self.ser.write(item.encode())
@@ -120,6 +121,7 @@ class SerialCom:
         return line.decode('utf-8').strip()
 
     def close(self):
+        # Closes connection
         self.ser.close()
 
 def testData(ser, times):
@@ -154,27 +156,5 @@ def testData(ser, times):
 if __name__ == '__main__':
     print('Starting')
     ser = SerialCom(baudRate = 500000, debug = True)
-    #sleep(1)
-    """
-    ser.readAll(True)
-    #sleep(.0001)
-    times = []
-    for i in range(100):
-        t0 = time.time()
-        ser.write('S')
-        a = ser.readAll()
-        if a[2].decode('utf-8').strip() == 'Ready for data':
-            data = [0 for i in range(300*3)]
-            ser.write(data)
-            #sleep(.0001)
-        b = ser.readAll()
-        if b[0].decode('utf-8').strip() == 'Done':
-            t1 = time.time()
-            ser.write('s')
-            #sleep(.0001)
-            ser.readAll()
-        print(t1-t0)
-        times.append(t1-t0)
-    """
     times = testData(ser, 100)
     print("Average Time: {}".format(sum(times)/len(times)))
