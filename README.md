@@ -30,9 +30,7 @@ Arduino File
 - Apply lighting effects: glow, spiral, fade, twinkle
 
 # Credits/Libraries Used
-FastLED (https://github.com/FastLED/FastLED)
-pyserial
-Vlc media player (python-vlc)
-Audionautix for song (free to use music on YouTube)
-We Wish You A Merry Xmas by Audionautix is licensed under a Creative Commons Attribution license (https://creativecommons.org/licenses/by/4.0/)
-Artist: http://audionautix.com/
+- FastLED (https://github.com/FastLED/FastLED)
+- pyserial
+- Vlc media player (python-vlc)
+- Audionautix for song (free to use music on YouTube) We Wish You A Merry Xmas by Audionautix is licensed under a Creative Commons Attribution license (https://creativecommons.org/licenses/by/4.0/) Artist: http://audionautix.com/
