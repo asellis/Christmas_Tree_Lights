@@ -1,4 +1,5 @@
-# Controls the lights for a christmas tree
+# Stores the LED color values and sends data over to an arduino through use
+# of SerialCom class
 from SerialCom import SerialCom     # Serial Communication to the arduino
 from LED import LED                 # Class to help store LED values
 
@@ -17,6 +18,7 @@ class LEDController:
 
     def setLayers(self, layerStarts):
         # Splits the tree into horizontal layers
+        # layerStarts is a list with the beginning LED of each layer
         for i in range(len(layerStarts)-1):
             self.layers[str(i)] = [j for j in range(layerStarts[i], layerStarts[i+1])]
         self.layers[str(len(layerStarts)-1)] = [j for j in range(layerStarts[-1], len(self.leds))]
@@ -38,6 +40,7 @@ class LEDController:
                         q3.append(self.layers[layer][led])
                     elif led/length > 3/4 and led/length <=1:
                         q4.append(self.layers[layer][led])
+        # Assign dictionary values to quarters
         self.layers['q1'] = q1
         self.layers['q2'] = q2
         self.layers['q3'] = q3
@@ -58,11 +61,11 @@ class LEDController:
             data += led.values()
         self.ser.write('S')          # Command for setting LED
         rec = self.ser.readline()    # Received data from the arduino
-        if self.ser.cleanLine(rec) == 'Ready':
+        if self.ser.cleanLine(rec) == 'Ready': # Arduino is ready to receive the data
             self.ser.write(data)
         rec = self.ser.readline()
         if self.ser.cleanLine(rec) == 'Done':
-            self.ser.write('s')      # Command to show all the LEDs
+            self.ser.write('s')      # Command to turn on the LEDs with their stored colors
         rec = self.ser.readline()
         if self.ser.cleanLine(rec) == 'Done':
             return
@@ -74,6 +77,8 @@ class LEDController:
 
     def setAll(self, red, green, blue, leds):
         # Same as set
+        # Unecessary after changing set to include multiple LEDs,
+        # but kept for compatability
         for i in leds:
             self.leds[i].set(red, green, blue)
 
@@ -83,8 +88,10 @@ class LEDController:
             color = pattern[i%len(pattern)].values()
             self.leds[i].set(color[0], color[1], color[2])
 
+    # THIS FUNCTION IS ONLY FOR TESTING
+    # FORMAL GLOW FUNCTION IN PLAYER FILE
     def glow(self, count=5, minIntensity=0, maxIntensity=255):
-        # Maxes the LEDs glow, best to use in LED player
+        # Maxes the LEDs glow (increase then decrease in intensity and repeat)
         nums = []
         level = maxIntensity
         while not self.stopLED:

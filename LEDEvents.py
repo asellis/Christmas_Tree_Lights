@@ -1,4 +1,5 @@
 # Used to store event data to be used with LEDPlayer
+# An event is a specified time in which some effect is played
 # Can load events from a file
 # Event data include the function (i.e. glow), it's parameters,
 #   and the LEDs/layer to be affected
@@ -8,6 +9,7 @@
 #   ledEvents stores multiple ledEvents in a queue using a list
 
 class ledEvent:
+    # Specifies a time, effect, and LEDs to act upon
     def __init__(self, time=0, command='', parameters='', layer=''):
         self.time = time
         self.leds = []
@@ -45,11 +47,14 @@ class ledEvent:
         return self.time
 
     def __str__(self):
+        # Returns a string of the data in the event
+        # Used for printing event data
         return 'ledEvent: time={} command={} parameters:{} layer={}'.format(\
             self.time, self.command, self.parameters, self.layer)
 
 
 class ledEvents:
+    # Contains multiple events for sequential execution
     def __init__(self, file = ''):
         self.events = []
         self.songFile=''
@@ -57,7 +62,7 @@ class ledEvents:
             self.openEvents(file)
 
     def openEvents(self, file):
-        # Opens events from file
+        # Opens events from a file
         contents = open(file, "r").readlines()
         startLine=1
         
@@ -113,4 +118,5 @@ class ledEvents:
             print(event)
 
     def __len__(self):
+        # Returns how many events are stored
         return len(self.events)

@@ -1,4 +1,6 @@
 # Handles all communication to arduino
+# This class can be used to send any data over, not just LED data
+# For the project, items refers to LED color data
 
 from time import sleep
 import time
@@ -8,12 +10,12 @@ class SerialCom:
     def __init__(self, port = None, baudRate = 500000, debug = False):
         # Sets up communication to the arduino
         # if no port specified common ports will be tested
-        self.portFound = False
+        self.portFound = False # Identifier for if a connection has been established
         self.baudRate = baudRate
-        self.items = [] # Stores items to send over
-        self.debug = debug
+        self.items = [] # Stores items to send over (LEDs)
+        self.debug = debug # if set to true will print out debug statements
 
-        waitAmount = 1 # Give a little time to establish connection
+        waitAmount = 1 # Give a little time to establish connection (seconds)
         
         if port != None:
             try:
@@ -41,7 +43,7 @@ class SerialCom:
                 if debug:
                     print("Failed to connect")
         if self.portFound:
-            sleep(waitAmount)
+            sleep(waitAmount) # seconds
 
     def connectCommonPorts(self):
         # Attempts to connect to common ports
@@ -63,7 +65,7 @@ class SerialCom:
             print("Unable to connect to port")
 
     def write(self, item):
-        # Writes item to serial
+        # Writes item (LED color or other for testing) to serial
         if type(item) == str or type(item) == chr:
             #self.ser.write(bytes(item, 'utf-8'))
             self.ser.write(item.encode())
@@ -75,11 +77,11 @@ class SerialCom:
                 print('Sent: ', bytes(item))
 
     def addItems(self, items):
-        # Adds items to be sent over
+        # Adds items (LED colors) to be sent over
         self.items += items
 
     def writeItems(self):
-        # Sends over added items
+        # Writes added items (LEDs) to the serial port
         self.ser.write(bytes(self.items))
 
     def clearItems(self):
@@ -99,6 +101,8 @@ class SerialCom:
 
     def readlinewait(self, p=False):
         # Waits until there is a line to read
+        # Same as readline but without double checking if data
+        # is available in buffer
         while not self.ser.inWaiting():
             pass
         r = self.ser.readline()
@@ -125,6 +129,9 @@ class SerialCom:
         self.ser.close()
 
 def testData(ser, times):
+    # A test function to ensure that connection has been established
+    # and that commands are properly read
+    # Also used for getting the update rate of LEDs
     ser.debug = False
     data = [0 for i in range(300 * 3)]
     timeData = []
@@ -154,6 +161,7 @@ def testData(ser, times):
     
 
 if __name__ == '__main__':
+    # Tests connection times
     print('Starting')
     ser = SerialCom(baudRate = 500000, debug = True)
     times = testData(ser, 100)

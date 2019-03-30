@@ -19,9 +19,12 @@ class LED:
         return [self.r, self.g, self.b]
 
     def __str__(self):
+        # Returns a string indicating the LED colors
+        # Used for printing LED data
         return "LED red={} green={} blue={}".format(self.r, self.g, self.b)
 
     def __getitem__(self,key):
+        # Returns the color based on the index given
         if key==0:
             return self.r
         elif key==1:

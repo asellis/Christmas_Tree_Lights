@@ -1,20 +1,20 @@
 # Used for doing multiple effects on the LEDs
-# Stores more information about how the LED is going
-# to change such as for a glow
-from LEDController import LEDController
+# Stores information for each LED describing the current effect
+# and how it is updating
+from LEDController import LEDController # This stores all the actual colors
 from LED import LED
 from time import sleep
 from time import time
 from LEDEvents import ledEvents
 import _thread
 import random
-import vlc
+import vlc # Player for music
 
 class LEDPlayer:
     def __init__(self, port='', baudRate = 500000, ledCount = 300):
         # Starts connection to serial and sets up LEDs
         self.ctrl = LEDController(port, baudRate, ledCount)
-        self.leds = dict()  # Stores information about each LED
+        self.leds = dict()  # Stores effect information about each LED
         for i in range(ledCount):
             self.leds[i] = dict()
 
@@ -23,7 +23,7 @@ class LEDPlayer:
         self.stopLoop = True
         self.paused = False
         self.startTime = 0
-        self.media = vlc.MediaPlayer()
+        self.media = vlc.MediaPlayer() # Player for music
         self.setupLED()
         self.pauseTime = 0
 
@@ -230,6 +230,7 @@ class LEDPlayer:
     """
     Glow
     """
+    # Incrementally increases and then decreases LED intensity
     
     def setGlow(self, led, amount=-1, minValue=0, maxValue=255, stopAt=-1, duration=-1, cycleDuration=-1, valueStart=-1):
         # Sets the LED to glow
@@ -343,6 +344,8 @@ class LEDPlayer:
     """
     Spiral
     """
+    # LEDs change to a certain pattern from the beginning of the strands to the end
+    # of the strands over a given duration
 
     def setSpiral(self, startLed, endLed, duration=-1, stopAt=-1, pattern=None, fill=True, reverse=False):
         # Changes LEDs sequentially

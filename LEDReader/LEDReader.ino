@@ -1,34 +1,40 @@
-/* Reads serial input and executes the specified command
+/* This program is used to receive data through a serial connection with the Arduino
+ *  to update the LED colors.
  * COMMANDS:
- * S  - sets the leds, folowed by bytes to update all leds
- * s  - show leds
+ *  S  - sets the LEDs, followed by bytes to update all LEDs
+ *  s  - show LEDs
  */
 
 #include "FastLED.h"
 #define SERIAL_BUFFER_SIZE 256   // increases serial buffer to ensure all data comes in
 
 #define NUM_LEDS 300
+
+// Each strand uses its own pin and has size equal to the number of LEDs on the strand
+// CRGB is from FastLED library
 CRGB Strand1[100];
 CRGB Strand2[100];
 CRGB Strand3[100];
 
 const int numBytes = NUM_LEDS * 3;    // The number of bytes needed for all the leds, 3 per led (R/G/B)
 char receivedBytes[numBytes];    // a buffer to store all the led lights, will convert later to an int
-                                // data received as char since we only need 8 bits per LED color
-bool receiveDone = false;  // used to tell if there is more data still
+                                 // data received as char since we only need 8 bits per LED color
+bool receiveDone = false;  // used to tell if there is more data to read
 
 void setup() {
+  // setup function called when Arduino starts
   Serial.begin(500000);   // Starts serial to allow transfer of data
 
-  // Setup LEDs, subject to change with added stands
+  // Setup LEDs
   FastLED.addLeds<WS2811, 13, RGB>(Strand1, 100);
   FastLED.addLeds<WS2811, 12, RGB>(Strand2, 100);
   FastLED.addLeds<WS2811, 11, RGB>(Strand3, 100);
   //Serial.println("Start");
-
 }
 
 void loop() {
+  // Called after setup is complete
+  // Keeps checking for data, initially a command
   recvCommand();
 }
 
@@ -48,7 +54,7 @@ void recvCommand()
 
 void recvData()
 {
-  // Receives data fo all LEDs
+  // Receives data of all LEDs
   int index = 0;
   char data;
   if(Serial.available() > 0)  // When the data has started to arrive
@@ -72,7 +78,7 @@ void readCommand(char serialCommand)
   // Serial.println(serialCommand);
   switch(serialCommand)
   {
-    case 'S': // Set LEDs
+    case 'S': // Set LED color information
     {
       Serial.println("Ready");
       while(!receiveDone)
@@ -83,7 +89,7 @@ void readCommand(char serialCommand)
       receiveDone = false;
       break;
     }
-    case 's': // Show all LEDs
+    case 's': // show all LEDs by sending a signal to LEDs with currently stored color information
     {
       FastLED.show();
       break;
@@ -103,8 +109,8 @@ void setLED()
     g = (uint8_t)receivedBytes[i+1];
     b = (uint8_t)receivedBytes[i+2];
 
-    // Set each LED
-    // if statement to spread amongst led strands
+    // Set each LED in the Stand arrays
+    // if statement to select LED stand
     if(i<(100*3))
     {
       ledNum = i/3;
