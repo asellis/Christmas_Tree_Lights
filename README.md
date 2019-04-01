@@ -1,5 +1,6 @@
 # Christmas_Tree_Lights
 Watch the video demonstrating the project
+
 [![Video](https://i.ytimg.com/vi/DiNhDXpTWDw/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDUJtWhysvL5qJiwSRvviOEOSzPIQ)](https://www.youtube.com/watch?v=DiNhDXpTWDw)
 
 The system consists of a computer (or Raspberry Pi) that plays a music file and sends lighting synchronization and effects data through USB to an Arduino microcontroller which configures connected LED lighting strands accordingly.
