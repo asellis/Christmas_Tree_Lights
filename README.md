@@ -1,13 +1,7 @@
 # Christmas_Tree_Lights
-This project is to synchronize control of WS2811 LED lights on a Christmas Tree with music.
-
-Please visit the [Christmas Tree Lights Wiki](https://github.com/asellis/Christmas_Tree_Lights/wiki) for more details on the setup.
-
-# Video
-
+Watch the video demonstrating the project
 [![Video](https://i.ytimg.com/vi/DiNhDXpTWDw/hqdefault.jpg?sqp=-oaymwEjCPYBEIoBSFryq4qpAxUIARUAAAAAGAElAADIQj0AgKJDeAE=&rs=AOn4CLDUJtWhysvL5qJiwSRvviOEOSzPIQ)](https://www.youtube.com/watch?v=DiNhDXpTWDw)
 
-# Overview
 The system consists of a computer (or Raspberry Pi) that plays a music file and sends lighting synchronization and effects data through USB to an Arduino microcontroller which configures connected LED lighting strands accordingly.
 
 Connected to the Arduino are 3 strands of WS2811 lights, each with 100 individually addressable LEDs (2 strands of 50 are connected together to make one long strand).  A 5V 30A power supply is being used to power the LEDs.  The lights are able to update at a rate around 20-25 times per second.

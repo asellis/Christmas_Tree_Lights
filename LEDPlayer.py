@@ -136,20 +136,21 @@ class LEDPlayer:
 
     def update(self):
         # Updates the LEDs to the given colors
-        # Must be called in order to produce a change
+        # Sends LED info to the Arduino
         self.ctrl.update()
 
     def plugParameters(self, command, args):
         # Runs the function 'command' with parameters stored in a list 'args'
+        # Used for filling the parameters in for an effect function call
         command(*args)
 
     def setLayers(self, layerStarts):
         # Sets layers in the tree
-        # Input is the beginning of every horizonatal layer
+        # Input is the beginning LED index of every horizontal layer
         self.ctrl.setLayers(layerStarts)
 
     def getLayer(self, layer):
-        # Returns the LEDs of the given layer name
+        # Returns all the LED indices of the given layer name
         return self.ctrl.getLayer(layer)
 
     def pause(self):
@@ -166,6 +167,7 @@ class LEDPlayer:
     def play(self):
         # Plays stored events
         if self.events.song()!='':
+            # If there is a song, play it
             self.media = vlc.MediaPlayer(self.events.song())
             self.media.play()
             waitTime=time()
@@ -344,8 +346,7 @@ class LEDPlayer:
     """
     Spiral
     """
-    # LEDs change to a certain pattern from the beginning of the strands to the end
-    # of the strands over a given duration
+    # New color grows along strand of LEDs
 
     def setSpiral(self, startLed, endLed, duration=-1, stopAt=-1, pattern=None, fill=True, reverse=False):
         # Changes LEDs sequentially
@@ -468,7 +469,7 @@ class LEDPlayer:
 
         # Set dictionary values
         self.leds[led]['command']='fade'
-        self.leds[led]['fade']['ratio']=self.ctrl.ledValues(led)    # Color ration
+        self.leds[led]['fade']['ratio']=self.ctrl.ledValues(led)    # Color ratio
         self.leds[led]['fade']['duration']=duration                 # Duration
         self.leds[led]['fade']['startTime']=time()                  # Start time
 

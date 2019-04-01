@@ -65,7 +65,7 @@ class LEDController:
             self.ser.write(data)
         rec = self.ser.readline()
         if self.ser.cleanLine(rec) == 'Done':
-            self.ser.write('s')      # Command to turn on the LEDs with their stored colors
+            self.ser.write('W')      # Command to turn on the LEDs with their stored colors
         rec = self.ser.readline()
         if self.ser.cleanLine(rec) == 'Done':
             return

@@ -1,4 +1,4 @@
-# Handles all communication to arduino
+# Handles all communication to the Arduino
 # This class can be used to send any data over, not just LED data
 # For the project, items refers to LED color data
 
@@ -12,7 +12,7 @@ class SerialCom:
         # if no port specified common ports will be tested
         self.portFound = False # Identifier for if a connection has been established
         self.baudRate = baudRate
-        self.items = [] # Stores items to send over (LEDs)
+        self.items = [] # Stores items (LED colors) to be sent over to Arduino
         self.debug = debug # if set to true will print out debug statements
 
         waitAmount = 1 # Give a little time to establish connection (seconds)
@@ -121,7 +121,7 @@ class SerialCom:
         return data
 
     def cleanLine(self, line):
-        # Returns arduino read line into a python string
+        # Returns Arduino read line into a python string
         return line.decode('utf-8').strip()
 
     def close(self):
