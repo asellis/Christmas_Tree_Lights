@@ -8,10 +8,10 @@ import serial    # Requires pyserial to be installed (pip install pyserial)
 
 class SerialCom:
     def __init__(self, port = None, baudRate = 500000, debug = False):
-        # Sets up communication to the arduino
+        # Sets up communication to the Arduino
         # if no port specified common ports will be tested
         self.portFound = False # Identifier for if a connection has been established
-        self.baudRate = baudRate
+        self.baudRate = baudRate # Transfer rate of data to Arduino
         self.items = [] # Stores items (LED colors) to be sent over to Arduino
         self.debug = debug # if set to true will print out debug statements
 
@@ -112,6 +112,7 @@ class SerialCom:
 
     def readAll(self, p=False):
         # Reads all input and returns as a list
+        # p is for printing
         data = []
         while self.ser.inWaiting():
             serialIn = self.ser.readline()

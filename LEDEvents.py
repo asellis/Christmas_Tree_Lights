@@ -10,40 +10,43 @@
 
 class ledEvent:
     # Specifies a time, effect, and LEDs to act upon
+    # Command is the effect function name (such as glow)
+    # while paramaters are specific to the effect function and include
+    # items such as pattern and duration
     def __init__(self, time=0, command='', parameters='', layer=''):
-        self.time = time
-        self.leds = []
-        self.layer = layer
-        self.command = command
-        self.parameters = parameters
-        self.end = False
+        self.time = time                # Delay time from initial event
+                                        #  before executing effect
+        self.leds = []                  # LEDs to execute effect on
+        self.layer = layer              # LED layer to execute effect on
+        self.command = command          # LED effect name
+        self.parameters = parameters    # LED effect parameters
         
     def setTime(self, time):
+        # Sets the delay time to execute the event in seconds
         self.time = time
 
     def setLEDs(self, leds):
+        # Sets the LED indices
         self.leds = leds
 
     def setLayer(self, layer):
+        # Sets the LED layer
         self.layer = layer
 
     def setCommand(self, command):
+        # Sets the LED effect function name
         self.command = command
 
     def setParameters(self, parameters):
+        # Sets the LED effect parameters (specific to each effect)
         self.parameters = parameters
-
-    def setEnd(self, bool = True):
-        self.end = True
-
-    def getEnd(self):
-        return self.end
 
     def content(self):
         # Returns the information stored in the event
         return [self.time, self.command, self.parameters, self.layer]
 
     def getTime(self):
+        # Returns the delay time
         return self.time
 
     def __str__(self):
@@ -65,11 +68,14 @@ class ledEvents:
         # Opens events from a file
         contents = open(file, "r").readlines()
         startLine=1
-        
+
+        # Checks if there is a song associated with the file
         if contents[0].strip().split('\t')[0]=='song':
             self.songFile=contents[0].strip().split('\t')[1]
             startLine+=1
-            
+
+        # Processes the line containins time, effect name, parameters
+        #  and LED layer
         for line in contents[startLine:]:
             items = line.strip().split('\t')
             if len(items)<=1:
@@ -83,15 +89,16 @@ class ledEvents:
             # Setting layer(s)
             if len(items)>=3:
                 if '+' in items[2]:
+                    # if '+' then multiple layers are specified
                     leds=items[2].split('+')
                     for led in leds:
                         led.strip()
                 else:
                     leds = items[2]
                     leds.strip()
-                    leds=[leds]
+                    leds=[leds] # makes leds iterable (only 1 element though)
 
-            # Setting parameters
+            # Setting effect parameters
             if len(items)>=4:
                 parameters = items[3].split(' ')
                 for i,item in enumerate(parameters):
@@ -114,6 +121,7 @@ class ledEvents:
         return self.songFile
 
     def print(self):
+        # Prints all the stored events
         for event in self.events:
             print(event)
 
