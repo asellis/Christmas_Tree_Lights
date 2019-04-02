@@ -1,40 +1,38 @@
 # Stores all the LED color values and sends data over to an Arduino
 # through use of SerialCom class
 from SerialCom import SerialCom     # Serial Communication to the Arduino
-from LED import LED                 # Class to help store LED values
+from LED import LED                 # Class for storing single LED values
 
 class LEDController:
     def __init__(self, port='', baudRate = 500000, ledCount = 300):
         self.ser = SerialCom(port, baudRate)
-        self.ser.readAll()  # Initiallizing the serial sends some data
-                            # read as a command
-                            # This flushes it all out
+        self.ser.readAll()  # Flush serial port
         self.leds = [LED() for i in range(ledCount)] # Create LED objects for all
                                                      # the LEDs to store their colors
-        self.stopLED = False   # Used to stop glowing effect
-                               # Not needed anymore since glow is done through
-                               # LED player class
+        self.stopLED = False   # FOR TESTING ONLY: Used to stop glowing effect
 
-        self.layers = dict()   # Each entry will be a layer that contains the
-                               # LED indices of the specified layer
-                               # i.e. 'all' contains all LED indices and
-                               # '0' contains the LEDs on the bottom
-                               # of the tree (after using setLayers function)
-        self.layers['all'] = [i for i in range(ledCount)]
+        self.layers = dict()   # Contains all layer definitions.
+                               # Each definition contains all the LED indices
+                               # for a given layer
+
+        self.layers['all'] = [i for i in range(ledCount)] # add a definition for all LEDs
 
     def setLayers(self, layerStarts):
-        # Splits the tree into horizontal layers
-        # layerStarts is a list with the beginning LED of each layer
+        # Partitions the tree into sections, called layers, for performing effects
+        # Layers are sections of the tree, both horizontal like stacked plates,
+        # and vertical quarters.
+
+        # Partition horizontal layers
         for i in range(len(layerStarts)-1):
             self.layers[str(i)] = [j for j in range(layerStarts[i], layerStarts[i+1])]
         self.layers[str(len(layerStarts)-1)] = [j for j in range(layerStarts[-1], len(self.leds))]
 
-        # Split into quarters
+        # Partition quarters
         q1=[]
         q2=[]
         q3=[]
         q4=[]
-        for layer in self.layers:
+        for layer in self.layers: # Split the horizontal layers into quarters
             if layer!='all':
                 length = len(self.layers[layer])
                 for led in range(len(self.layers[layer])):
@@ -46,14 +44,14 @@ class LEDController:
                         q3.append(self.layers[layer][led])
                     elif led/length > 3/4 and led/length <=1:
                         q4.append(self.layers[layer][led])
-        # Assign dictionary values to quarters
+        # Assign LED indices for each quarter’s layer definition
         self.layers['q1'] = q1
         self.layers['q2'] = q2
         self.layers['q3'] = q3
         self.layers['q4'] = q4
 
     def getLayer(self, layer):
-        # Returns the LED indecies of the specified layer
+        # Returns the LED indices of the specified layer
         return self.layers[layer]
 
     def ledValues(self, led):
@@ -65,14 +63,14 @@ class LEDController:
         # Waits for a response before sending next command/data
         data = []
         for led in self.leds:
-            data += led.values()
-        self.ser.write('S')          # Command for setting LED
-        rec = self.ser.readline()    # Received data from the arduino
+            data += led.values()     # Create single list of all RGB values
+        self.ser.write('S')          # Command for sending LED values
+        rec = self.ser.readline()    # Receive acknowledge from the Arduino
         if self.ser.cleanLine(rec) == 'Ready': # Arduino is ready to receive the data
             self.ser.write(data)
         rec = self.ser.readline()
         if self.ser.cleanLine(rec) == 'Done': # Arduino has finished reading the data
-            self.ser.write('W')      # Command to turn on the LEDs with their stored colors
+            self.ser.write('W')      # Command to turn on the LEDs with the new data
         rec = self.ser.readline()
         if self.ser.cleanLine(rec) == 'Done': # Arduino has finished writing LED values
             return
@@ -84,15 +82,15 @@ class LEDController:
 
     def setAll(self, red, green, blue, leds):
         # Same as set
-        # Unecessary after changing set to include multiple LEDs,
-        # but kept for compatability
+        # Unnecessary after changing set to include multiple LEDs,
+        # but kept for compatibility
         for i in leds:
             self.leds[i].set(red, green, blue)
 
     def setPattern(self, pattern, leds):
         # Sets the LEDs a specified repeating pattern
-        # i.e. LED 1 Red, LED 2 Green, LED 3 Red, LED 4 Green, etc.
-        # Patern input is of the form [(R,G,B),(R,G,B),...]
+        # e.g. LED 1 Red, LED 2 Green, LED 3 Red, LED 4 Green, etc.
+        # Pattern input is of the form [(R,G,B),(R,G,B),...]
         for i in leds:
             color = pattern[i%len(pattern)].values()
             self.leds[i].set(color[0], color[1], color[2])
@@ -120,11 +118,10 @@ class LEDController:
             level+=count
             self.update()
             
-        
     def stop(self):
-        # Stops glowing
+        # FOR TESTING ONLY Stops glowing
         self.stopLED = True
 
     def start(self):
-        # Continues glowing
+        # FOR TESTING ONLY Resume glowing
         self.stopLED = False
