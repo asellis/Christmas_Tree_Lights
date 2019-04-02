@@ -1,5 +1,4 @@
 # Handles all communication to the Arduino
-# This class can be used to send any data over, not just LED data
 # For the project, items refers to LED color data
 
 from time import sleep
@@ -21,7 +20,7 @@ class SerialCom:
                 # Will try connecting to specified port
                 if debug:
                     print("Trying to connect to '" + str(port) + "'")
-                self.ser = serial.Serial(port, self.baudRate)
+                self.ser = serial.Serial(port, self.baudRate) # Try to initialize port
                 portFound = True  # Only gets set if success
                 if debug:
                     print("Port connected")
@@ -36,7 +35,7 @@ class SerialCom:
             portFound = self.connectCommonPorts()
 
         if portFound:
-            sleep(waitAmount) # seconds
+            sleep(waitAmount) # Give a little time to establish connection (seconds)
         # TO ADD: raise exception if not connected
 
     def connectCommonPorts(self):
@@ -48,7 +47,7 @@ class SerialCom:
             try:
                 if self.debug:
                     print("Trying to connect to '"+ str(port) + "'")
-                self.ser = serial.Serial(port, self.baudRate)
+                self.ser = serial.Serial(port, self.baudRate) # Try to initialize port
                 if self.debug:
                     print("Connected to '" + str(port) + "'")
                 return True

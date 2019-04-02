@@ -11,7 +11,7 @@ class LEDController:
                                                      # the LEDs to store their colors
         self.stopLED = False   # FOR TESTING ONLY: Used to stop glowing effect
 
-        self.layers = dict()   # Contains all layer definitions.
+        self.layers = dict()   # Contains all layer definitions for partitioning the tree.
                                # Each definition contains all the LED indices
                                # for a given layer
 
